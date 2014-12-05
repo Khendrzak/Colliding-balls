@@ -2,7 +2,7 @@ Bouncer[] bouncers = new Bouncer[250];
 void setup() {
   size(displayWidth,displayHeight);
   for (int i = 0; i < bouncers.length; i++) {
-    bouncers[i] = new Bouncer(random(20,40), random(5,10));
+    bouncers[i] = new Bouncer(random(15,40), random(5,10));
   }
 }
 
@@ -12,10 +12,10 @@ void draw() {
     bouncers[i].colors();
     bouncers[i].display();
     bouncers[i].move();
-    bouncers[i].Bounce();
+    bouncers[i].bounce();
     for (int j = 0; j < bouncers.length; j++) {
       if (i!=j) {
-        bouncers[i].collideWith(bouncers[j]);
+        bouncers[i].collide(bouncers[j]);
       }
     }
   }
@@ -39,14 +39,14 @@ class Bouncer {
   }
   
   void display() {
-    ellipse(loc.x, loc.y, sz, sz);
+   triangle(loc.x, loc.y, loc.x-sz, loc.y+sz, loc.x+sz, loc.y+sz);
   }
 
   void move() {
     loc.add(vel);
   }
 
-  void Bounce() {
+  void bounce() {
     if (loc.x + sz/2 > width || loc.x - sz/2 < 0) {
       vel.x *= -1;
     } 
@@ -55,7 +55,7 @@ class Bouncer {
     }
   }
 
-  void collideWith(Bouncer OtherBall) {
+  void collide(Bouncer OtherBall) {
     if (loc.dist(OtherBall.loc) < sz/2 + OtherBall.sz/2) {
       vel = PVector.sub(loc, OtherBall.loc);
       vel.normalize();
